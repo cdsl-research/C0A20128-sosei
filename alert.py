@@ -43,7 +43,7 @@ for svc_ns in svc_ns_list:
             + "&start="+ ts_start )
 
     # slack webhook
-    webhook_url = 'https://hooks.slack.com/services/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'
+    webhook_url = ''
     channel = "#general"
     username = "Sock-shop-Alert"
 
