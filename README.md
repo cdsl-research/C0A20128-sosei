@@ -1,2 +1,2 @@
-# hikida-soei
-Tatsuki Hikidaの創生課題repository
+# C0A20128-soei
+疋田辰起の創生課題
