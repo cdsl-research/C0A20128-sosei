@@ -3,11 +3,12 @@ import json
 from datetime import datetime
 from kubernetes import client, config
 import time
-from concurrent.futures import ProcessPoolExecutor, as_completed
+from concurrent.futures import ProcessPoolExecutor
+import os
 
 def slack_webhook(metrics_dict, svc):
     # slack webhook
-    webhook_url = 'https://hooks.slack.com/services/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'
+    webhook_url = os.environ['SLACK_WEBHOOK']
     channel = "#general"
     username = "Sock-shop-Alert"
 
@@ -21,7 +22,6 @@ def slack_webhook(metrics_dict, svc):
             webhook_data = { "channel": channel, "username": username, "text": text, "icon_emoji": ":ghost:" }
             print(webhook_data.items())
             requests.post(webhook_url, data=json.dumps(webhook_data))
-
 
 def get_metrics(data, limit, svc):
     name_duration = {}
