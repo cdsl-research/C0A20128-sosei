@@ -1,0 +1,212 @@
+Name:             front-end-7d89d49d6b-zjmh7
+Namespace:        sock-shop
+Priority:         0
+Service Account:  default
+Node:             hikida-v6/192.168.100.152
+Start Time:       Thu, 08 Dec 2022 06:17:55 +0000
+Labels:           name=front-end
+                  pod-template-hash=7d89d49d6b
+                  security.istio.io/tlsMode=istio
+                  service.istio.io/canonical-name=front-end
+                  service.istio.io/canonical-revision=latest
+Annotations:      kubectl.kubernetes.io/default-container: front-end
+                  kubectl.kubernetes.io/default-logs-container: front-end
+                  prometheus.io/path: /stats/prometheus
+                  prometheus.io/port: 15020
+                  prometheus.io/scrape: true
+                  sidecar.istio.io/status:
+                    {"initContainers":["istio-init"],"containers":["istio-proxy"],"volumes":["workload-socket","credential-socket","workload-certs","istio-env...
+Status:           Failed
+Reason:           Evicted
+Message:          The node was low on resource: ephemeral-storage. Container front-end was using 40Ki, which exceeds its request of 0. Container istio-proxy was using 17620Ki, which exceeds its request of 0. 
+IP:               10.42.0.214
+IPs:
+  IP:           10.42.0.214
+Controlled By:  ReplicaSet/front-end-7d89d49d6b
+Init Containers:
+  istio-init:
+    Container ID:  containerd://3a8f03452a104758e5bff61d48239dda2edb5e2c59db531c7a031cce0c8a495a
+    Image:         docker.io/istio/proxyv2:1.16.0
+    Image ID:      docker.io/istio/proxyv2@sha256:f6f97fa4fb77a3cbe1e3eca0fa46bd462ad6b284c129cf57bf91575c4fb50cf9
+    Port:          <none>
+    Host Port:     <none>
+    Args:
+      istio-iptables
+      -p
+      15001
+      -z
+      15006
+      -u
+      1337
+      -m
+      REDIRECT
+      -i
+      *
+      -x
+      
+      -b
+      *
+      -d
+      15090,15021,15020
+      --log_output_level=default:info
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Thu, 08 Dec 2022 06:17:58 +0000
+      Finished:     Thu, 08 Dec 2022 06:17:58 +0000
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     2
+      memory:  1Gi
+    Requests:
+      cpu:        10m
+      memory:     40Mi
+    Environment:  <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-pk5b7 (ro)
+Containers:
+  front-end:
+    Container ID:   containerd://bcb2fa63f10595ba3f8ad49c9bec6eab031a2ab0db45fbb5153b47871e32116d
+    Image:          weaveworksdemos/front-end:0.3.12
+    Image ID:       docker.io/weaveworksdemos/front-end@sha256:26a2d9b6b291dee2dca32fca3f5bff6c2fa07bb5954359afcbc8001cc70eac71
+    Port:           8079/TCP
+    Host Port:      0/TCP
+    State:          Terminated
+      Reason:       Error
+      Exit Code:    137
+      Started:      Thu, 08 Dec 2022 06:58:14 +0000
+      Finished:     Thu, 08 Dec 2022 06:59:17 +0000
+    Ready:          False
+    Restart Count:  3
+    Limits:
+      cpu:     300m
+      memory:  1000Mi
+    Requests:
+      cpu:      100m
+      memory:   300Mi
+    Liveness:   http-get http://:15020/app-health/front-end/livez delay=300s timeout=1s period=3s #success=1 #failure=3
+    Readiness:  http-get http://:15020/app-health/front-end/readyz delay=30s timeout=1s period=3s #success=1 #failure=3
+    Environment:
+      SESSION_REDIS:  true
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-pk5b7 (ro)
+  istio-proxy:
+    Container ID:  
+    Image:         docker.io/istio/proxyv2:1.16.0
+    Image ID:      
+    Port:          15090/TCP
+    Host Port:     0/TCP
+    Args:
+      proxy
+      sidecar
+      --domain
+      $(POD_NAMESPACE).svc.cluster.local
+      --proxyLogLevel=warning
+      --proxyComponentLogLevel=misc:error
+      --log_output_level=default:info
+      --concurrency
+      2
+    State:          Terminated
+      Reason:       ContainerStatusUnknown
+      Message:      The container could not be located when the pod was terminated
+      Exit Code:    137
+      Started:      Mon, 01 Jan 0001 00:00:00 +0000
+      Finished:     Mon, 01 Jan 0001 00:00:00 +0000
+    Last State:     Terminated
+      Reason:       ContainerStatusUnknown
+      Message:      The container could not be located when the pod was deleted.  The container used to be Running
+      Exit Code:    137
+      Started:      Mon, 01 Jan 0001 00:00:00 +0000
+      Finished:     Mon, 01 Jan 0001 00:00:00 +0000
+    Ready:          False
+    Restart Count:  1
+    Limits:
+      cpu:     2
+      memory:  1Gi
+    Requests:
+      cpu:      10m
+      memory:   40Mi
+    Readiness:  http-get http://:15021/healthz/ready delay=1s timeout=3s period=2s #success=1 #failure=30
+    Environment:
+      JWT_POLICY:                    third-party-jwt
+      PILOT_CERT_PROVIDER:           istiod
+      CA_ADDR:                       istiod.istio-system.svc:15012
+      POD_NAME:                      front-end-7d89d49d6b-zjmh7 (v1:metadata.name)
+      POD_NAMESPACE:                 sock-shop (v1:metadata.namespace)
+      INSTANCE_IP:                    (v1:status.podIP)
+      SERVICE_ACCOUNT:                (v1:spec.serviceAccountName)
+      HOST_IP:                        (v1:status.hostIP)
+      PROXY_CONFIG:                  {}
+                                     
+      ISTIO_META_POD_PORTS:          [
+                                         {"containerPort":8079,"protocol":"TCP"}
+                                     ]
+      ISTIO_META_APP_CONTAINERS:     front-end
+      ISTIO_META_CLUSTER_ID:         Kubernetes
+      ISTIO_META_INTERCEPTION_MODE:  REDIRECT
+      ISTIO_META_WORKLOAD_NAME:      front-end
+      ISTIO_META_OWNER:              kubernetes://apis/apps/v1/namespaces/sock-shop/deployments/front-end
+      ISTIO_META_MESH_ID:            cluster.local
+      TRUST_DOMAIN:                  cluster.local
+      ISTIO_KUBE_APP_PROBERS:        {"/app-health/front-end/livez":{"httpGet":{"path":"/","port":8079,"scheme":"HTTP"},"timeoutSeconds":1},"/app-health/front-end/readyz":{"httpGet":{"path":"/","port":8079,"scheme":"HTTP"},"timeoutSeconds":1}}
+    Mounts:
+      /etc/istio/pod from istio-podinfo (rw)
+      /etc/istio/proxy from istio-envoy (rw)
+      /var/lib/istio/data from istio-data (rw)
+      /var/run/secrets/credential-uds from credential-socket (rw)
+      /var/run/secrets/istio from istiod-ca-cert (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-pk5b7 (ro)
+      /var/run/secrets/tokens from istio-token (rw)
+      /var/run/secrets/workload-spiffe-credentials from workload-certs (rw)
+      /var/run/secrets/workload-spiffe-uds from workload-socket (rw)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             False 
+  ContainersReady   False 
+  PodScheduled      True 
+Volumes:
+  workload-socket:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>
+  credential-socket:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>
+  workload-certs:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>
+  istio-envoy:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     Memory
+    SizeLimit:  <unset>
+  istio-data:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>
+  istio-podinfo:
+    Type:  DownwardAPI (a volume populated by information about the pod)
+    Items:
+      metadata.labels -> labels
+      metadata.annotations -> annotations
+  istio-token:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  43200
+  istiod-ca-cert:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      istio-ca-root-cert
+    Optional:  false
+  kube-api-access-pk5b7:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              beta.kubernetes.io/os=linux
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
