@@ -13,12 +13,20 @@ for i in svcs.items:
 
 prom = PrometheusConnect(url ="http://localhost:9090")
 for svc in svc_list:
-    svc = '\"' + svc + '\"'
-    metrics = "container_memory_usage_bytes{container=" + svc + "}"
-    metric_data = prom.get_metric_range_data(metric_name=metrics)
+    if (svc == "front-end"):
+        svc = '\"' + svc + '\"'
 
-    t = metric_data[0].get('values')[-1][0]
-    v = metric_data[0].get('values')[-1][1]
-    print(datetime.datetime.fromtimestamp(t))
-    print(svc)
-    print(int(v) / (1000 * 1000))
+        memory_usage_name = "container_memory_usage_bytes{container=" + svc + "}"
+        memory_limit_name = "container_spec_memory_limit_bytes{container=" + svc + "}"
+
+        memory_usage_data = prom.get_metric_range_data(metric_name=memory_usage_name)
+        memory_limit_data = prom.get_metric_range_data(metric_name=memory_limit_name)
+        
+        memory_usage = memory_usage_data[0].get('values')[-1][1]
+        memory_limit = memory_limit_data[0].get('values')[-1][1]
+
+        rate = str(100 * (int(memory_usage) / int(memory_limit))) + "%"
+
+        print(svc, rate)
+    
+    
