@@ -1,10 +1,3 @@
-import requests
-import json
-from datetime import datetime
-from kubernetes import client, config
-from concurrent.futures import ProcessPoolExecutor
-import os
-
 def get_metrics(data, limit, svc):
     name_duration = {}
     for i in range(limit):
@@ -21,4 +14,6 @@ def get_metrics(data, limit, svc):
                 name_duration[operationName] = [duration]
             else:
                 name_duration[operationName].append(duration)
+
+    return name_duration
 
