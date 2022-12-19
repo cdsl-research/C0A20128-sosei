@@ -22,4 +22,3 @@ def get_metrics(data, limit, svc):
             else:
                 name_duration[operationName].append(duration)
 
-    slack_webhook(name_duration, svc)
