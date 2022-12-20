@@ -12,7 +12,7 @@ def main():
     interval = 3600000
 
     # duration limit μs
-    duration_lim = 5000
+    duration_lim = 500
 
     # now(end)～$interval μs ago(start)
     ts_end = str(datetime.timestamp(now)).replace('.', '')
@@ -34,23 +34,33 @@ def main():
     svcs = v1.list_namespaced_service(namespace)
     for i in svcs.items:
         svc_list.append(i.metadata.name)
-        svc_ns_list.append(i.metadata.name + "." + namespace)
+        # svc_ns_list.append(i.metadata.name + "." + namespace)
 
-    for svc_ns in svc_ns_list: 
+    for svc in svc_list: 
         # jaeger ui url
         URL = ( "http://localhost:" + str(port)
                 + "/jaeger/api/traces"
                 + "?end=" + ts_end 
                 + "&limit=" + str(limit)
                 + "&lookback=1h&maxDuration&minDuration"
-                + "&service=" + svc_ns
+                + "&service=" + svc + "." + namespace
                 + "&start="+ ts_start )
 
         # get jaeger jason
         r = requests.get(URL)
         data = r.json()
 
-        get_duration.get_metrics(data, limit, svc_ns)
+        duration_dict = duration.get_duration(data, limit)
+        # print(duration_dict)
+        for key in duration_dict:
+            ave = sum(duration_dict[key]) / len(duration_dict[key])
+            if ave >= duration_lim:
+                memory_rate = memory.get_rate(svc)
+                print(memory_rate)
+                if ((memory_rate != None) and (memory_rate >= 5)):
+                    alert.slack_webhook(svc, key, memory_rate)
+                    print("alert!")
+
 
 if __name__ == "__main__":
     main()

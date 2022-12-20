@@ -1,18 +1,8 @@
-import datetime
-from kubernetes import client, config
 from prometheus_api_client import PrometheusConnect
 
-svc_list = []
-namespace = "sock-shop"
-config.load_kube_config()
-v1 = client.CoreV1Api()
-
-svcs = v1.list_namespaced_service(namespace)
-for i in svcs.items:
-    svc_list.append(i.metadata.name)
-
-prom = PrometheusConnect(url ="http://localhost:9090")
-for svc in svc_list:
+def get_rate(svc):  
+    prom = PrometheusConnect(url ="http://localhost:9090")
+    
     if (svc == "front-end"):
         svc = '\"' + svc + '\"'
 
@@ -25,8 +15,8 @@ for svc in svc_list:
         memory_usage = memory_usage_data[0].get('values')[-1][1]
         memory_limit = memory_limit_data[0].get('values')[-1][1]
 
-        rate = str(100 * (int(memory_usage) / int(memory_limit))) + "%"
-
-        print(svc, rate)
+        rate = 100 * (int(memory_usage) / int(memory_limit))
+        
+        return rate
     
     

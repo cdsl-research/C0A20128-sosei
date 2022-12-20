@@ -1,4 +1,4 @@
-def get_metrics(data, limit, svc):
+def get_duration(data, limit):
     name_duration = {}
     for i in range(limit):
         try:
