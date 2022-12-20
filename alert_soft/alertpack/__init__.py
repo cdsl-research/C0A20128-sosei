@@ -1,1 +1,1 @@
-__all__ = ["aler_slack", "get_duration", "get_memory"]
+__all__ = ["aler_slack", "duration", "memory"]

@@ -1,9 +1,8 @@
 import requests
-import json
 from datetime import datetime
 from kubernetes import client, config
-from concurrent.futures import ProcessPoolExecutor
 import os
+from alertpack import *
 
 def main():
     # get current time
@@ -26,6 +25,7 @@ def main():
     limit = 20
 
     # get kubernetes svc
+    svc_list = []
     svc_ns_list = []
     namespace = "sock-shop"
     config.load_kube_config()
@@ -33,7 +33,8 @@ def main():
 
     svcs = v1.list_namespaced_service(namespace)
     for i in svcs.items:
-        svc_ns_list.append( i.metadata.name + "." + namespace )
+        svc_list.append(i.metadata.name)
+        svc_ns_list.append(i.metadata.name + "." + namespace)
 
     for svc_ns in svc_ns_list: 
         # jaeger ui url
@@ -49,7 +50,7 @@ def main():
         r = requests.get(URL)
         data = r.json()
 
-        get_metrics(data, limit, svc_ns)
+        get_duration.get_metrics(data, limit, svc_ns)
 
 if __name__ == "__main__":
     main()
