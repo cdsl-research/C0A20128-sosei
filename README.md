@@ -2,6 +2,9 @@
 ## 提案ソフトウェア
 alert_softに今回制作したソフトウェアがあります．
 
+対象のマイクロサービスに対してのアラートを設定するソフトウェアです．
+
+
 ### 必要なもの
 `istioctl dashboard`で立ち上げた`Jaeger`と`Prometheus`のURL
 
