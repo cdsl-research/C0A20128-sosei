@@ -18,3 +18,6 @@ slack_webhook用のURL
 locustfile.pyは今回使用したlocustのテストシナリオです．
 
 `locust -h localhost -f locustfile.py`で実行します．
+
+## このソフトウェアについてのレポート
+https://drive.google.com/file/d/1LqaH8o71-NIpDAPT7Vc3MjUMEIVADiRd/view?usp=sharing
